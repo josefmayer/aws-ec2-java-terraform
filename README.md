@@ -10,7 +10,7 @@ Terraform, AWS, SSH
 
 
 ### Steps
-Run: < br/>
+Run: <br />
 *terraform apply*
 
 
