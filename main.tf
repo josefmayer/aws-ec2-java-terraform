@@ -8,8 +8,13 @@ variable public_key_path{
   default = "~/.ssh/key_pair_aws_1_id_rsa.pub"
 }
 
-resource "aws_key_pair" "aws_17" {
-  key_name   = "aws_17"               # key pair name AWS
+variable sftp_batch_path {
+  description = "Path do sftp batch file"
+  default = "~/sftp_batchfile"
+}
+
+resource "aws_key_pair" "aws_18" {
+  key_name   = "aws_18"               # key pair name AWS
   public_key = "${file(var.public_key_path)}"
 }
 
@@ -21,8 +26,8 @@ provider "aws" {
 #  cidr_block = "10.0.0.0/16"
 #}
 
-resource "aws_security_group" "terraform_17" {
-  name        = "terraform_17"
+resource "aws_security_group" "terraform_18" {
+  name        = "terraform_18"
   description = "Used in the terraform"
   # vpc_id      = "${aws_vpc.default.id}"
 
@@ -52,13 +57,13 @@ resource "aws_security_group" "terraform_17" {
 }
 
 
-resource "aws_instance" "ec2_instance_17" {
+resource "aws_instance" "ec2_instance_18" {
   ami = "ami-060cde69"
   instance_type = "t2.micro"
 
-  key_name = "${aws_key_pair.aws_17.id}"
+  key_name = "${aws_key_pair.aws_18.id}"
 
-  vpc_security_group_ids = ["${aws_security_group.terraform_17.id}"]
+  vpc_security_group_ids = ["${aws_security_group.terraform_18.id}"]
 
 
   connection {
@@ -99,6 +104,13 @@ resource "aws_instance" "ec2_instance_17" {
       "java -jar io-file-copy-1.0-SNAPSHOT.jar",
     ]
   }
+
+  # download logFile results
+  provisioner "local-exec" {
+    command =
+    "sftp -b ${var.sftp_batch_path} -i ${var.private_key_path} -o StrictHostKeyChecking=no ubuntu@${aws_instance.ec2_instance_18.public_dns}"
+  }
+
 
 }
 

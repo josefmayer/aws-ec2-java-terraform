@@ -5,10 +5,11 @@ Connect via ssh <br />
 Install JVM on server with provisioner 'remote-exec' <br />
 Copy Java code to server with provisioner 'file' <br />
 Run Java program <br />
+Download result file with SFTP <br />
 
 
 ### Technologies
-Terraform, AWS, SSH, Java
+Terraform, AWS, Java, SSH, SFTP
 
 
 ### Steps
